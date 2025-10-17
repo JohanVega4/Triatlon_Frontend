@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://pagina de api no se si vercel ajjaa'
+    apiUrl: 'https://triatlon-backend-fq83pji0k-johan-vegas-projects-1fad8aea.vercel.app'
   };
