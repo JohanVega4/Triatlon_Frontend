@@ -32,8 +32,16 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/acercade" routerLinkActive="active">Acerca de</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" (click)="openAdminModal()" [class.active]="isAdminRoute()">Admin</a>
+        
+        <!-- Mostrar Admin o Login basado en autenticación -->
+        <li class="nav-item" *ngIf="(isAuthenticated$ | async) && (isAdmin$ | async)">
+          <a class="nav-link" routerLink="/admin" routerLinkActive="active">Admin</a>
+        </li>
+        <li class="nav-item" *ngIf="!(isAuthenticated$ | async)">
+          <a class="nav-link" href="#" (click)="openAdminModal($event)">Login Admin</a>
+        </li>
+        <li class="nav-item" *ngIf="isAuthenticated$ | async">
+          <a class="nav-link" href="#" (click)="logout($event)">Cerrar Sesión</a>
         </li>
       </ul>
     </div>

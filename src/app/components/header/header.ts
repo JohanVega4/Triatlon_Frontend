@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { LoginModalService } from '../../services/login-modal.service';
 
 @Component({
   selector: 'app-header',
@@ -25,7 +24,7 @@ export class Header implements OnInit {
   password = '';
   loginError = '';
 
-  constructor(private router: Router, public authService: AuthService, private loginModalService: LoginModalService) {
+  constructor(private router: Router, public authService: AuthService) {
     this.isAuthenticated$ = this.authService.currentUser.pipe(map(user => !!user));
     this.isAdmin$ = this.authService.currentUser.pipe(map(user => user?.es_admin ?? false));
 
@@ -36,9 +35,13 @@ export class Header implements OnInit {
 
   ngOnInit(): void {}
 
-  logout(): void {
+  logout(event?: Event): void {
+    if (event) {
+      event.preventDefault();
+    }
     this.authService.logout();
     this.router.navigate(['/']);
+    this.isMenuOpen = false;
   }
 
   isAdminRoute(): boolean {
@@ -49,12 +52,20 @@ export class Header implements OnInit {
     this.isMenuOpen = !this.isMenuOpen;
   }
 
-  openAdminModal(): void {
-    this.loginModalService.openModal();
+  openAdminModal(event?: Event): void {
+    if (event) {
+      event.preventDefault();
+    }
+    this.showAdminModal = true;
+    this.isMenuOpen = false;
+    this.loginError = ''; // Limpiar errores anteriores
+    this.username = '';
+    this.password = '';
   }
 
   closeAdminModal(): void {
-    this.loginModalService.closeModal();
+    this.showAdminModal = false;
+    this.loginError = '';
   }
 
   onAdminLogin(): void {
@@ -64,8 +75,9 @@ export class Header implements OnInit {
     }
 
     this.authService.login(this.username, this.password).subscribe({
-      next: () => {
-        this.loginModalService.closeModal();
+      next: (response) => {
+        this.closeAdminModal();
+        // Redirigir al admin dashboard después del login exitoso
         this.router.navigate(['/admin']);
       },
       error: (error) => {
@@ -97,9 +109,5 @@ export class Header implements OnInit {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }
-  }
-
-  isLoggedIn(): boolean {
-    return this.authService.isAuthenticated();
   }
 }
