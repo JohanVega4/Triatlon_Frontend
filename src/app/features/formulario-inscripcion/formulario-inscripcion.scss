@@ -1,0 +1,661 @@
+@use 'bootstrap/scss/bootstrap' as *;
+
+:root {
+  --color-institucional: #fecb00;
+  --color-secundario: #000000;
+  --color-terciario: #f8f9fa;
+}
+
+// Contenedor principal
+.container {
+  padding: 2rem 0;
+  min-height: calc(100vh - 60px);
+  background-color: #f5f5f5;
+}
+
+// Card de información importante
+.info-card {
+  border-left: 4px solid var(--color-institucional);
+
+  .info-header {
+    background-color: #fff3cd;
+    border-bottom: 1px solid #ffc107;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    padding: 1rem 1.5rem;
+
+    &:hover {
+      background-color: #ffe69c;
+    }
+
+    h5 {
+      margin: 0;
+      color: #856404;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      i.bi-info-circle-fill {
+        color: #ffc107;
+      }
+
+      i.float-end {
+        transition: transform 0.3s;
+      }
+    }
+  }
+
+  .info-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+    padding: 0 1.5rem;
+
+    &.show {
+      max-height: 500px;
+      padding: 1.5rem;
+    }
+  }
+
+  .info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      padding: 0.75rem 0;
+      color: #495057;
+      line-height: 1.6;
+      display: flex;
+      align-items: flex-start;
+
+      &:not(:last-child) {
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      i.bi-check-circle-fill {
+        color: #28a745;
+        margin-top: 0.2rem;
+        flex-shrink: 0;
+      }
+
+      strong {
+        color: var(--color-secundario);
+      }
+    }
+  }
+}
+
+// Card principal
+.card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  overflow: hidden;
+}
+
+.card-body {
+  padding: 0;
+}
+
+// Título general del formulario (header de la card)
+h2.card-title {
+  background-color: var(--color-institucional);
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-bottom: 0;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+
+  i {
+    color: rgb(0, 0, 0);
+  }
+}
+
+// Formulario
+form {
+  background-color: rgb(255, 255, 255);
+  padding: 2rem;
+}
+
+// Tarjeta de información del equipo
+.team-info-card {
+  background-color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+
+  h5 {
+    background-color: var(--color-secundario);
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 0;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    &::before {
+      content: '\F4E5';
+      font-family: 'bootstrap-icons';
+      font-size: 1.2rem;
+      color: white;
+    }
+  }
+
+  .team-info-content {
+    padding: 1.5rem;
+  }
+}
+
+// Tarjetas de participantes
+.participant-card {
+  background-color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  h5 {
+    background-color: var(--color-secundario);
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 0;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: none;
+
+    &::before {
+      content: '\F4E1';
+      font-family: 'bootstrap-icons';
+      font-size: 1.2rem;
+      color: white;
+    }
+  }
+
+  // Contenido de la tarjeta
+  .row {
+    padding: 1.5rem;
+  }
+}
+
+// Etiquetas
+.form-label {
+  font-weight: 600;
+  color: var(--color-secundario);
+  margin-bottom: 0.5rem;
+}
+
+// Inputs y selects
+.form-control,
+.form-select {
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  padding: 0.75rem;
+  transition: all 0.3s;
+  background-color: white;
+
+  &:focus {
+    border-color: var(--color-institucional);
+    box-shadow: 0 0 0 0.2rem rgba(254, 203, 0, 0.25);
+  }
+}
+
+// Sección de documentación
+.documentation-card {
+  background-color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0;
+  margin-top: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+
+  h5 {
+    background-color: var(--color-secundario);
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 0;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    &::before {
+      content: '\F3A5';
+      font-family: 'bootstrap-icons';
+      font-size: 1.2rem;
+      color: white;
+    }
+  }
+
+  .documentation-content {
+    padding: 1.5rem;
+  }
+}
+
+// Botón de inscripción
+.btn-inscripcion {
+  background-color: var(--color-institucional);
+  color: var(--color-secundario);
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 0.75rem 2.5rem;
+  border-radius: 8px;
+  border: none;
+  transition: all 0.3s ease;
+
+  &:hover:not(:disabled) {
+    background-color: #e0b000;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+  }
+}
+
+// Mensajes de error
+.text-danger small {
+  font-size: 0.875rem;
+  display: block;
+  margin-top: 0.25rem;
+}
+
+// Texto de ayuda
+.form-text {
+  color: #6c757d;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+// Responsive
+@include media-breakpoint-down(md) {
+  .card-body {
+    padding: 1.5rem;
+  }
+
+  [formArrayName="participants"]>div {
+    padding: 1rem;
+  }
+
+  h2.card-title {
+    font-size: 1.5rem;
+  }
+
+  .btn-inscripcion {
+    width: 100%;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .container {
+    padding: 1rem 0;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+
+  [formArrayName="participants"]>div {
+    padding: 0.75rem;
+  }
+
+  h2.card-title {
+    font-size: 1.3rem;
+  }
+}
+
+.modal.fade.show {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
+// Sección de privacidad
+.privacy-section {
+  margin-top: 2rem;
+
+  .privacy-card {
+    border: 2px solid #007bff;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: white;
+
+    .privacy-header {
+      background-color: #e7f3ff;
+      border-bottom: 1px solid #007bff;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      padding: 1rem 1.5rem;
+
+      &:hover {
+        background-color: #d0e9ff;
+      }
+
+      h6 {
+        margin: 0;
+        color: #004085;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        i.bi-shield-lock-fill {
+          color: #007bff;
+        }
+
+        i.float-end {
+          transition: transform 0.3s;
+        }
+      }
+    }
+
+    .privacy-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+      padding: 0 1.5rem;
+
+      &.show {
+        max-height: 800px;
+        padding: 1.5rem;
+        overflow-y: auto;
+      }
+    }
+
+    .privacy-content {
+      color: #495057;
+      line-height: 1.6;
+
+      p {
+        margin-bottom: 0.75rem;
+
+        strong {
+          color: var(--color-secundario);
+        }
+      }
+
+      ul {
+        margin-bottom: 1rem;
+        padding-left: 1.5rem;
+
+        li {
+          margin-bottom: 0.5rem;
+        }
+      }
+    }
+  }
+
+  .privacy-checkbox {
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 2px solid #dee2e6;
+
+    .form-check-input {
+      width: 1.25rem;
+      height: 1.25rem;
+      margin-top: 0.15rem;
+      cursor: pointer;
+
+      &:checked {
+        background-color: #007bff;
+        border-color: #007bff;
+      }
+    }
+
+    .form-check-label {
+      margin-left: 0.5rem;
+      cursor: pointer;
+      color: #495057;
+      font-size: 0.95rem;
+
+      strong {
+        color: var(--color-secundario);
+      }
+    }
+
+    .text-danger {
+      margin-top: 0.5rem;
+      margin-left: 1.75rem;
+    }
+  }
+}
+
+// Spinner en el botón
+.spinner-border {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  vertical-align: text-bottom;
+  border: 0.25em solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spinner-border 0.75s linear infinite;
+
+  &.spinner-border-sm {
+    width: 0.875rem;
+    height: 0.875rem;
+    border-width: 0.2em;
+  }
+}
+
+@keyframes spinner-border {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .privacy-section {
+    .privacy-card {
+      .privacy-body.show {
+        max-height: 600px;
+      }
+    }
+
+    .privacy-checkbox {
+      .form-check-label {
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+// Actual
+ización de estilos de privacidad
+.privacy-section {
+  .privacy-checkbox {
+    .form-check-label {
+      .privacy-link {
+        color: #007bff;
+        text-decoration: none;
+        transition: all 0.3s;
+
+        &:hover {
+          color: #0056b3;
+          text-decoration: underline;
+        }
+
+        strong {
+          color: #007bff;
+        }
+      }
+    }
+  }
+}
+
+// Modal de privacidad
+.privacy-modal-header {
+  background-color: #007bff;
+  color: white;
+  border-bottom: none;
+
+  .modal-title {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+
+    i {
+      font-size: 1.5rem;
+    }
+  }
+
+  .btn-close-white {
+    filter: brightness(0) invert(1);
+  }
+}
+
+.privacy-modal-body {
+  max-height: 60vh;
+  overflow-y: auto;
+
+  .privacy-content {
+    color: #495057;
+    line-height: 1.6;
+    text-align: left;
+
+    p {
+      margin-bottom: 0.75rem;
+
+      strong {
+        color: var(--color-secundario);
+      }
+    }
+
+    ul {
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+
+      li {
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+}
+
+// Estilos del enlace de privacidad
+.privacy-section {
+  .privacy-checkbox {
+    .form-check-label {
+      .privacy-link {
+        color: var(--color-secundario);
+        text-decoration: underline;
+        text-decoration-color: var(--color-institucional);
+        text-decoration-thickness: 2px;
+        transition: all 0.3s;
+        font-weight: 600;
+
+        &:hover {
+          color: var(--color-secundario);
+          text-decoration-color: #e0b000;
+        }
+
+        strong {
+          color: var(--color-secundario);
+        }
+      }
+    }
+  }
+}
+
+// Modal de privacidad
+.privacy-modal-header {
+  background-color: var(--color-institucional);
+  color: var(--color-secundario);
+  border-bottom: none;
+
+  .modal-title {
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+
+    i {
+      font-size: 1.5rem;
+    }
+  }
+
+  .btn-close {
+    filter: brightness(0);
+  }
+}
+
+.privacy-modal-body {
+  .privacy-content {
+    p, ul, li {
+      color: #495057;
+    }
+  }
+}
+
+.modal-footer {
+  .btn-primary {
+    background-color: var(--color-institucional);
+    border-color: var(--color-institucional);
+    color: var(--color-secundario);
+    font-weight: 600;
+
+    &:hover {
+      background-color: #e0b000;
+      border-color: #e0b000;
+      color: var(--color-secundario);
+    }
+  }
+}
+
+// Checkbox de privacidad con color institucional
+.privacy-checkbox {
+  .form-check-input {
+    border-color: #dee2e6;
+    
+    &:checked {
+      background-color: var(--color-institucional) !important;
+      border-color: var(--color-institucional) !important;
+    }
+
+    &:focus {
+      border-color: var(--color-institucional) !important;
+      box-shadow: 0 0 0 0.25rem rgba(254, 203, 0, 0.25) !important;
+    }
+
+    &:checked:focus {
+      background-color: var(--color-institucional) !important;
+      border-color: var(--color-institucional) !important;
+      box-shadow: 0 0 0 0.25rem rgba(254, 203, 0, 0.25) !important;
+    }
+  }
+}

@@ -1,0 +1,61 @@
+:root {
+  --color-institucional: #fecb00;
+  --color-secundario: #000000;
+  --color-terciario: #f8f9fa;
+}
+
+.navbar {
+  background-color: var(--color-secundario);
+  box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
+.navbar-brand {
+  color: white;
+  font-weight: bold;
+}
+
+.navbar-brand img {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.nav-link {
+  color: rgba(255,255,255,.8);
+  font-weight: 500;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.nav-link:hover {
+  color: var(--color-institucional);
+}
+
+.nav-link.active {
+  color: var(--color-institucional);
+}
+
+// Estilos del modal
+.admin-modal-header {
+  background-color: var(--color-secundario);
+  color: white;
+}
+
+.btn-admin-login {
+  background-color: var(--color-institucional);
+  color: var(--color-secundario);
+  border: none;
+  font-weight: bold;
+}
+
+.btn-admin-login:hover {
+  background-color: #e0b000;
+  color: var(--color-secundario);
+}
+
+.modal {
+  z-index: 1055;
+}
+
+.modal-backdrop {
+  z-index: 1050;
+}

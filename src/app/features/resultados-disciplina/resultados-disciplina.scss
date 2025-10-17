@@ -1,0 +1,143 @@
+:host {
+  display: block;
+  background-color: #f8f9fa;
+  padding: 3rem 1rem;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+h2 {
+  text-align: center;
+  font-size: 3rem;
+  font-weight: 800;
+  color: #1c2e58;
+  margin-bottom: 2rem;
+}
+
+.alert-info {
+  max-width: 800px;
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 2rem;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.resultados-list {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
+  overflow: hidden; /* To clip the table borders */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 1rem 1.25rem;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  thead th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  tbody tr {
+    transition: background-color 0.2s ease;
+    &:last-child td {
+      border-bottom: none;
+    }
+    &:hover {
+      background-color: #f1f3f5;
+    }
+  }
+
+  tbody td {
+    color: #495057;
+    vertical-align: middle;
+    font-weight: 500;
+
+    span {
+      color: #6c757d;
+    }
+  }
+
+  /* Styling for top 3 rows */
+  tbody tr:nth-child(1),
+  tbody tr:nth-child(2),
+  tbody tr:nth-child(3) {
+    td:first-child {
+      font-weight: 900;
+      position: relative;
+      padding-left: 2.5rem;
+      &::before {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-family: 'bootstrap-icons';
+        font-size: 1.2rem;
+      }
+    }
+  }
+
+  tbody tr:nth-child(1) td:first-child {
+    color: #b8860b;
+    &::before {
+      content: '\f156'; /* bi-award-fill */
+      color: #ffd700;
+    }
+  }
+  tbody tr:nth-child(2) td:first-child {
+    color: #6c757d;
+    &::before {
+      content: '\f156'; /* bi-award-fill */
+      color: #c0c0c0;
+    }
+  }
+  tbody tr:nth-child(3) td:first-child {
+    color: #8b4513;
+    &::before {
+      content: '\f156'; /* bi-award-fill */
+      color: #cd7f32;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  h2 {
+    font-size: 2.2rem;
+  }
+  .resultados-list {
+    box-shadow: none;
+    border: 1px solid #dee2e6;
+  }
+  table {
+    th, td {
+      padding: 0.75rem;
+      font-size: 0.9rem;
+    }
+    /* Allow horizontal scroll on small screens */
+    th, td {
+      white-space: nowrap;
+    }
+  }
+}

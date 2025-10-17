@@ -1,0 +1,75 @@
+<!-- Navegación -->
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" routerLink="/">
+      <img src="\assets\UPTC_logo.png" alt="Logo UPTC" width="37" height="300">
+      Triatlón UPTC
+    </a>
+    <button class="navbar-toggler" type="button" (click)="toggleMenu()">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" [class.show]="isMenuOpen">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/" routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact: true}">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/inscripcion" routerLinkActive="active">Inscripción</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" (click)="scrollToSection('info', $event)">Información</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/podio" routerLinkActive="active">Resultados</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/galeria" routerLinkActive="active">Galería</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/noticias" routerLinkActive="active">Noticias</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/acercade" routerLinkActive="active">Acerca de</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" (click)="openAdminModal()" [class.active]="isAdminRoute()">Admin</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Modal de Administrador -->
+<div class="modal fade" [class.show]="showAdminModal" [style.display]="showAdminModal ? 'block' : 'none'" tabindex="-1"
+  aria-labelledby="adminModalLabel" [attr.aria-hidden]="!showAdminModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header admin-modal-header">
+        <h5 class="modal-title" id="adminModalLabel">Acceso Administrador</h5>
+        <button type="button" class="btn-close btn-close-white" (click)="closeAdminModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="onAdminLogin()">
+          <div class="mb-3">
+            <label for="username" class="form-label">Usuario</label>
+            <input type="text" class="form-control" id="username" [(ngModel)]="username" name="username" required>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="password" [(ngModel)]="password" name="password" required>
+          </div>
+          <div class="alert alert-danger" *ngIf="loginError">
+            {{ loginError }}
+          </div>
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-admin-login">Iniciar Sesión</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Backdrop del modal -->
+<div class="modal-backdrop fade" [class.show]="showAdminModal" *ngIf="showAdminModal" (click)="closeAdminModal()"></div>

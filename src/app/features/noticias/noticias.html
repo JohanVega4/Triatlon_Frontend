@@ -1,0 +1,110 @@
+<!-- Encabezado de Noticias -->
+<section class="news-header">
+  <div class="container">
+    <h1 class="news-title">Noticias del Triatlón</h1>
+    <p class="news-subtitle">Mantente informado sobre todas las novedades del evento</p>
+  </div>
+</section>
+
+<!-- Contenido de Noticias -->
+<section class="news-content">
+  <div class="container">
+    <!-- Loading -->
+    <div *ngIf="loading" class="text-center py-5">
+      <div class="spinner-border text-warning" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <p class="mt-3">Cargando noticias...</p>
+    </div>
+
+    <!-- Error -->
+    <div *ngIf="error && !loading" class="alert alert-danger" role="alert">
+      {{ error }}
+    </div>
+
+    <!-- Contenido -->
+    <div *ngIf="!loading && !error">
+      <!-- Filtros -->
+      <div class="news-filter">
+        <button *ngFor="let categoria of categorias" class="filter-btn" [class.active]="categoriaActiva === categoria"
+          (click)="filtrarNoticias(categoria)">
+          {{ categoria }}
+        </button>
+      </div>
+
+      <!-- Noticia Destacada -->
+      <div class="featured-news" *ngIf="noticiaDestacada && categoriaActiva === 'Todas'">
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="card featured-news-card">
+              <img [src]="getImagenUrl(noticiaDestacada)" class="card-img-top" [alt]="noticiaDestacada.titulo">
+              <div class="card-body featured-news-body">
+                <div class="news-date">{{ formatearFecha(noticiaDestacada.fecha) }}</div>
+                <span class="news-category">{{ noticiaDestacada.categoria }}</span>
+                <h2 class="featured-title">{{ noticiaDestacada.titulo }}</h2>
+                <p class="news-card-text">{{ noticiaDestacada.resumen }}</p>
+                <a [routerLink]="['/noticia', getNoticiaId(noticiaDestacada)]" class="btn btn-read-more">Leer más</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4" *ngIf="noticiasSecundarias.length > 0">
+            <div class="card news-card">
+              <img [src]="getImagenUrl(noticiasSecundarias[0])" class="card-img-top"
+                [alt]="noticiasSecundarias[0].titulo">
+              <div class="card-body news-card-body">
+                <div class="news-date">{{ formatearFecha(noticiasSecundarias[0].fecha) }}</div>
+                <span class="news-category">{{ noticiasSecundarias[0].categoria }}</span>
+                <h5 class="news-card-title">{{ noticiasSecundarias[0].titulo }}</h5>
+                <p class="news-card-text">{{ noticiasSecundarias[0].resumen }}</p>
+                <a [routerLink]="['/noticia', getNoticiaId(noticiasSecundarias[0])]" class="btn btn-read-more">Leer más</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid de Noticias -->
+      <div class="row">
+        <ng-container *ngIf="noticiasFiltradas.length > 0; else noResults">
+          <div class="col-md-4" *ngFor="let noticia of noticiasFiltradas.slice(categoriaActiva === 'Todas' ? 1 : 0)">
+            <div class="card news-card">
+              <img [src]="getImagenUrl(noticia)" class="card-img-top" [alt]="noticia.titulo">
+              <div class="card-body news-card-body">
+                <div class="news-date">{{ formatearFecha(noticia.fecha) }}</div>
+                <span class="news-category">{{ noticia.categoria }}</span>
+                <h5 class="news-card-title">{{ noticia.titulo }}</h5>
+                <p class="news-card-text">{{ noticia.resumen }}</p>
+                <a [routerLink]="['/noticia', getNoticiaId(noticia)]" class="btn btn-read-more">Leer más</a>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-template #noResults>
+          <div class="col-12 text-center py-5">
+            <p class="text-muted">No hay noticias disponibles en esta categoría.</p>
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- Paginación -->
+      <nav aria-label="Page navigation" class="mt-5">
+        <ul class="pagination">
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item active"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,31 @@
+<!-- Sección de encabezado -->
+<header class="gallery-header">
+  <h1 class="gallery-title">Acerca del Proyecto</h1>
+  <p class="gallery-subtitle">
+    Este proyecto fue elegido con el propósito de brindar una solución innovadora a una necesidad real dentro de nuestra comunidad.
+    Nuestro objetivo principal es optimizar la gestión de procesos y mejorar la experiencia de los usuarios, ofreciendo una herramienta moderna, eficiente y accesible.
+  </p>
+</header>
+
+<!-- Sección del equipo -->
+<section class="gallery-content">
+  <div class="container">
+    <div class="gallery-filter">
+      <p>Conoce a nuestro equipo y los pilares de este proyecto</p>
+    </div>
+
+    <!-- Grid responsivo -->
+    <div class="gallery-grid">
+      <div class="gallery-card" *ngFor="let miembro of equipo">
+        <img class="gallery-img" [src]="miembro.imagen" [alt]="miembro.nombre" />
+        <div class="gallery-card-body">
+          <h5 class="gallery-card-title">{{ miembro.nombre }}</h5>
+          <span class="gallery-card-role">{{ miembro.rol }}</span>
+          <p class="gallery-card-description">{{ miembro.descripcion }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<br>
+<br>
