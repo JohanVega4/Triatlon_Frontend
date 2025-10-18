@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://triatlon-backend.vercel.app'
+    apiUrl: 'https://triatlonbackend-production.up.railway.app'
   };

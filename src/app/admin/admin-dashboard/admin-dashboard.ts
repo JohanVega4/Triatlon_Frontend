@@ -78,7 +78,7 @@ export class AdminDashboard implements OnInit {
     }
   }
   abrirRecursos() {
-  window.open('https://drive.google.com/drive/folders/1JfQzJj1Yb9xTQMj9I4JAckSYyoAk1PlN?usp=sharing', '_blank');
+  window.open('https://drive.google.com/drive/folders/1yb28ss474v2LPq-dcyflO-VAkA-eGtZr?usp=sharing', '_blank');
   }
 
 }

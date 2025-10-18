@@ -38,13 +38,7 @@ export class Home implements OnInit, OnDestroy {
   private imagesByYear = new Map<number, any[]>();
   private currentIndices = { 2024: 0, 2023: 0 };
 
-  // Resultados históricos
-  resultadosHistoricos = [
-    { anio: '2024', equipo: 'Los Titanes', tiempo: '2:15:30.450' },
-    { anio: '2023', equipo: 'Velocistas UPTC', tiempo: '2:18:45.230' },
-    { anio: '2022', equipo: 'Trifuerza', tiempo: '2:22:10.875' },
-    { anio: '2021', equipo: 'Aguas Profundas', tiempo: '2:25:33.120' }
-  ];
+
 
   constructor(
     private imagenesService: ImagenesService,

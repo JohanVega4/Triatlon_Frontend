@@ -13,6 +13,7 @@ import { GestionImagenes } from './admin/gestion-imagenes/gestion-imagenes';
 import { VisibilidadResultados } from './admin/visibilidad-resultados/visibilidad-resultados';
 import { GestionNoticias } from './admin/gestion-noticias/gestion-noticias';
 import { AdminGuard } from './guards/admin-guard';
+import { Login } from './admin/login/login';
 import { Participantes } from './features/participantes/participantes';
 import { Noticias } from './features/noticias/noticias';
 import { NoticiaDetalle } from './features/noticia-detalle/noticia-detalle';
@@ -33,16 +34,26 @@ export const routes: Routes = [
   { path: 'premios-individuales', component: PremiosIndividuales, title: 'Premios Individuales - Triatlón' },
   { path: 'resultados/:disciplina', component: ResultadosDisciplina, title: 'Resultados por Disciplina - Triatlón' },
   { path: 'acercade', component: EquipoTrabajo, title: 'Acerca de - Triatlón' },
-  { path: 'inscripcion', component: FormularioInscripcion, title: 'Inscripción de Equipos - Triatlón' },
-  
-  // Rutas de administración (sin children, cada una con su propio guard)
-  { path: 'admin', component: AdminDashboard, canActivate: [AdminGuard], title: 'Admin Dashboard - Triatlón' },
-  { path: 'admin/editar-equipo/:id', component: EditarEquipo, canActivate: [AdminGuard], title: 'Editar Equipo - Admin' },
-  { path: 'admin/gestion-tiempos', component: GestionTiempos, canActivate: [AdminGuard], title: 'Gestión de Tiempos - Admin' },
-  { path: 'admin/gestion-equipos', component: GestionEquipos, canActivate: [AdminGuard], title: 'Gestión de Equipos - Admin' },
-  { path: 'admin/gestion-imagenes', component: GestionImagenes, canActivate: [AdminGuard], title: 'Gestión de Imágenes - Admin' },
-  { path: 'admin/gestion-noticias', component: GestionNoticias, canActivate: [AdminGuard], title: 'Gestión de Noticias - Admin' },
-  { path: 'admin/visibilidad-resultados', component: VisibilidadResultados, canActivate: [AdminGuard], title: 'Visibilidad de Resultados - Admin' },
+  {path: 'inscripcion', component: FormularioInscripcion, title: 'Inscripción de Equipos - Triatlón'},
+  // Rutas de administración
+  {
+    path: 'admin',
+    component: AdminDashboard,
+    canActivate: [AdminGuard],
+    title: 'Admin Dashboard - Triatlón',
+    children: [
+      { path: 'editar-equipo/:id', component: EditarEquipo, title: 'Editar Equipo - Admin' },
+      { path: 'gestion-tiempos', component: GestionTiempos, title: 'Gestión de Tiempos - Admin' },
+      { path: 'gestion-equipos', component: GestionEquipos, title: 'Gestión de Equipos - Admin' },
+      { path: 'gestion-imagenes', component: GestionImagenes, title: 'Gestión de Imágenes - Admin' },
+      { path: 'gestion-noticias', component: GestionNoticias, title: 'Gestión de Noticias - Admin' },
+      { path: 'visibilidad-resultados', component: VisibilidadResultados, title: 'Visibilidad de Resultados - Admin' },
+      { path: '', redirectTo: 'gestion-tiempos', pathMatch: 'full' }
+    ]
+  },
+
+  // Ruta de login (para admin)
+  { path: 'login', component: Login, title: 'Login - Triatlón' },
 
   // Redirección para rutas no encontradas
   { path: '**', redirectTo: '', pathMatch: 'full' }

@@ -1,5 +1,4 @@
 @use 'bootstrap/scss/bootstrap' as *;
-@use 'sass:color' as color;
 @use '../../animaciones.scss' as *;
 
 // Colores UPTC Colombia
@@ -124,13 +123,13 @@ $transition-collapse: height 0.35s ease;
         border-color: $tri-green;
 
         &:hover {
-          background-color: color.adjust($tri-green, $lightness: -10%);
+          background-color: darken($tri-green, 10%);
         }
       }
 
       &-danger {
         &:hover {
-          background-color: color.adjust($tri-red, $lightness: -10%);
+          background-color: darken($tri-red, 10%);
         }
       }
 

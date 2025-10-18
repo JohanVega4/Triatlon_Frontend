@@ -1,5 +1,4 @@
 @use 'bootstrap/scss/bootstrap' as *;
-@use 'sass:color' as color;
 @use '../../animaciones.scss' as *;
 
 // Colores UPTC Colombia
@@ -136,7 +135,7 @@ form {
       border-color: $uptc-accent;
 
       &:hover {
-  background-color: color.adjust($uptc-accent, $lightness: -10%);
+        background-color: darken($uptc-accent, 10%);
       }
 
       &::before {

@@ -23,6 +23,11 @@ export class Noticias implements OnInit {
     noticiasSecundarias: NoticiaLocal[] = [];
     loading = true;
     error = '';
+    
+    // Paginación
+    paginaActual: number = 1;
+    noticiasPorPagina: number = 9; // 9 noticias por página (3x3 grid)
+    totalPaginas: number = 1;
 
     constructor(private noticiasService: NoticiasService) {}
 
@@ -44,6 +49,7 @@ export class Noticias implements OnInit {
                     this.extraerCategorias();
                     this.separarNoticiaDestacada();
                     this.filtrarNoticias('Todas');
+                    this.calcularTotalPaginas();
                 }
                 this.loading = false;
             },
@@ -67,11 +73,51 @@ export class Noticias implements OnInit {
 
     filtrarNoticias(categoria: string): void {
         this.categoriaActiva = categoria;
+        this.paginaActual = 1; // Resetear a la primera página al cambiar filtro
+        
         if (categoria === 'Todas') {
             this.noticiasFiltradas = this.noticiasSecundarias;
         } else {
-            this.noticiasFiltradas = this.noticiasSecundarias.filter(n => n.categoria === categoria);
+            // Filtrar desde todas las noticias, no solo las secundarias
+            this.noticiasFiltradas = this.noticias.filter(n => n.categoria === categoria);
         }
+        
+        this.calcularTotalPaginas();
+    }
+
+    calcularTotalPaginas(): void {
+        const noticiasParaPaginar = this.categoriaActiva === 'Todas' 
+            ? this.noticiasFiltradas.slice(1) // Excluir la destacada
+            : this.noticiasFiltradas;
+        
+        this.totalPaginas = Math.ceil(noticiasParaPaginar.length / this.noticiasPorPagina);
+    }
+
+    getNoticiasPaginadas(): NoticiaLocal[] {
+        const noticiasParaPaginar = this.categoriaActiva === 'Todas' 
+            ? this.noticiasFiltradas.slice(1) // Excluir la destacada
+            : this.noticiasFiltradas;
+        
+        const inicio = (this.paginaActual - 1) * this.noticiasPorPagina;
+        const fin = inicio + this.noticiasPorPagina;
+        
+        return noticiasParaPaginar.slice(inicio, fin);
+    }
+
+    cambiarPagina(pagina: number): void {
+        if (pagina >= 1 && pagina <= this.totalPaginas) {
+            this.paginaActual = pagina;
+            // Scroll suave hacia arriba
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+
+    getPaginasArray(): number[] {
+        return Array.from({ length: this.totalPaginas }, (_, i) => i + 1);
+    }
+
+    mostrarPaginacion(): boolean {
+        return this.totalPaginas > 1;
     }
 
     formatearFecha(fecha: string): string {

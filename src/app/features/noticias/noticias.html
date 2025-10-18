@@ -56,7 +56,8 @@
                 <span class="news-category">{{ noticiasSecundarias[0].categoria }}</span>
                 <h5 class="news-card-title">{{ noticiasSecundarias[0].titulo }}</h5>
                 <p class="news-card-text">{{ noticiasSecundarias[0].resumen }}</p>
-                <a [routerLink]="['/noticia', getNoticiaId(noticiasSecundarias[0])]" class="btn btn-read-more">Leer más</a>
+                <a [routerLink]="['/noticia', getNoticiaId(noticiasSecundarias[0])]" class="btn btn-read-more">Leer
+                  más</a>
               </div>
             </div>
           </div>
@@ -65,41 +66,38 @@
 
       <!-- Grid de Noticias -->
       <div class="row">
-        <ng-container *ngIf="noticiasFiltradas.length > 0; else noResults">
-          <div class="col-md-4" *ngFor="let noticia of noticiasFiltradas.slice(categoriaActiva === 'Todas' ? 1 : 0)">
-            <div class="card news-card">
-              <img [src]="getImagenUrl(noticia)" class="card-img-top" [alt]="noticia.titulo">
-              <div class="card-body news-card-body">
-                <div class="news-date">{{ formatearFecha(noticia.fecha) }}</div>
-                <span class="news-category">{{ noticia.categoria }}</span>
-                <h5 class="news-card-title">{{ noticia.titulo }}</h5>
-                <p class="news-card-text">{{ noticia.resumen }}</p>
-                <a [routerLink]="['/noticia', getNoticiaId(noticia)]" class="btn btn-read-more">Leer más</a>
-              </div>
+        <div class="col-md-4" *ngFor="let noticia of getNoticiasPaginadas()">
+          <div class="card news-card">
+            <img [src]="getImagenUrl(noticia)" class="card-img-top" [alt]="noticia.titulo">
+            <div class="card-body news-card-body">
+              <div class="news-date">{{ formatearFecha(noticia.fecha) }}</div>
+              <span class="news-category">{{ noticia.categoria }}</span>
+              <h5 class="news-card-title">{{ noticia.titulo }}</h5>
+              <p class="news-card-text">{{ noticia.resumen }}</p>
+              <a [routerLink]="['/noticia', getNoticiaId(noticia)]" class="btn btn-read-more">Leer más</a>
             </div>
           </div>
-        </ng-container>
+        </div>
 
-        <ng-template #noResults>
-          <div class="col-12 text-center py-5">
-            <p class="text-muted">No hay noticias disponibles en esta categoría.</p>
-          </div>
-        </ng-template>
+        <!-- Mensaje cuando no hay noticias en un filtro específico -->
+        <div class="col-12 text-center py-5" *ngIf="categoriaActiva !== 'Todas' && noticiasFiltradas.length === 0">
+          <p class="text-muted">No hay noticias disponibles en esta categoría.</p>
+        </div>
       </div>
 
       <!-- Paginación -->
-      <nav aria-label="Page navigation" class="mt-5">
-        <ul class="pagination">
-          <li class="page-item">
-            <a class="page-link" href="#" aria-label="Previous">
+      <nav aria-label="Page navigation" class="mt-5" *ngIf="mostrarPaginacion()">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" [class.disabled]="paginaActual === 1">
+            <a class="page-link" href="javascript:void(0)" (click)="cambiarPagina(paginaActual - 1)" aria-label="Previous">
               <span aria-hidden="true">&laquo;</span>
             </a>
           </li>
-          <li class="page-item active"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
+          <li class="page-item" *ngFor="let pagina of getPaginasArray()" [class.active]="pagina === paginaActual">
+            <a class="page-link" href="javascript:void(0)" (click)="cambiarPagina(pagina)">{{ pagina }}</a>
+          </li>
+          <li class="page-item" [class.disabled]="paginaActual === totalPaginas">
+            <a class="page-link" href="javascript:void(0)" (click)="cambiarPagina(paginaActual + 1)" aria-label="Next">
               <span aria-hidden="true">&raquo;</span>
             </a>
           </li>

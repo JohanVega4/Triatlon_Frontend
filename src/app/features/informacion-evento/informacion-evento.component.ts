@@ -15,19 +15,19 @@ export class InformacionEventoComponent {
     {
       nombre: 'Natación',
       reglamento: 'El reglamento de natación principalmente es la la ropa adecuada y gorro abligatorio para picsinas.',
-      reglas: '1. Seguir recomendaciones.           2. No está permitido tener algun tipo de la ayuda        . 3. En caso de emergencia, levantar un brazo para ofecerle la devida atencion.',
+      reglas: '1. Seguir recomendaciones.\n2. No está permitido tener algun tipo de la ayuda.\n3. En caso de emergencia, levantar un brazo para ofecerle la devida atencion.',
       mapaUrl: 'assets/maps/natacion.png'
     },
     {
       nombre: 'Ciclismo',
       reglamento: 'Es obligatorio el uso de casco rígido. preferiblemente tener bicicleta de remplazo por si se pinchan.',
-      reglas: '1. No bloquear a otros competidores.   2.No desviarse o tomar atajos de la ruta          3. Respetar las zonas de avituallamiento.',
+      reglas: '1. No bloquear a otros competidores.\n2. No desviarse o tomar atajos de la ruta\n3. Respetar las zonas de avituallamiento.',
       mapaUrl: 'assets/maps/ciclismo.png'
     },
     {
       nombre: 'Atletismo',
       reglamento: 'Se debe llevar el dorsal visible en la parte delantera. El recorrido estará claramente marcado y no se permite recibir ayuda externa fuera de las zonas designadas.',
-      reglas: '1.Completar el recorrido establecido sin atajos.         2.Mantener una conducta deportiva.            3....',
+      reglas: '1.Completar el recorrido establecido sin atajos. \n2.Mantener una conducta deportiva. \n 3....',
       mapaUrl: 'assets/maps/carrera.png'
     }
   ]);

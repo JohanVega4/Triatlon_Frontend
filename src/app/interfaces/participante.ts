@@ -3,6 +3,7 @@ export interface Participante {
     nombre: string;
     genero: 'masculino' | 'femenino'|null;
     seccional: 'Tunja' | 'Sogamoso' | 'Chiquinquirá' | 'Duitama' | 'Aguazul' | null;
+    rol: 'estudiante' | 'funcionario' | null;
     delegado: boolean;
     disciplina: 'natacion' | 'ciclismo' | 'atletismo' | null;
     disciplina_ascun: 'natacion' | 'ciclismo' | 'atletismo' | 'ninguno' | null;

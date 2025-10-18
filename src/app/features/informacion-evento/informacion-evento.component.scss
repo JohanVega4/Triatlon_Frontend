@@ -1,9 +1,18 @@
+@use 'bootstrap/scss/bootstrap' as *;
+
+:root {
+  --color-institucional: #fecb00;
+  --color-secundario: #000000;
+  --color-terciario: #f8f9fa;
+}
+
 :host {
   display: block;
   padding: 2rem 1rem;
-  background-color: #f9f9f9;
+  background-color: #f8f9fa;
 }
 
+// Contenedor principal
 .info-evento-container {
   max-width: 900px;
   margin: 0 auto;
@@ -11,73 +20,86 @@
 
   h2 {
     font-size: 2.5rem;
-    color: #333;
+    color: var(--color-secundario);
     margin-bottom: 0.5rem;
+    font-weight: 700;
   }
 
   .subtitle {
-    color: #666;
+    color: #6c757d;
     margin-bottom: 2rem;
+    font-size: 1.1rem;
   }
 }
 
+// Selector de disciplinas
 .disciplinas-selector {
   display: flex;
   justify-content: center;
   gap: 1rem;
   margin-bottom: 2rem;
+  flex-wrap: wrap;
 }
 
+// Botones de disciplinas
 .disciplina-btn {
   padding: 0.75rem 1.5rem;
-  border: 1px solid #ccc;
-  background-color: #fff;
+  border: 2px solid var(--color-institucional);
+  background-color: white;
   border-radius: 8px;
   cursor: pointer;
   font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-secundario);
   transition: all 0.3s ease;
 
   &:hover {
-    background-color: #e9e9e9;
-    border-color: #999;
+    background-color: var(--color-institucional);
+    color: var(--color-secundario);
+    transform: translateY(-2px);
   }
 
   &.active {
-    background-color: #007bff;
-    color: #fff;
-    border-color: #007bff;
+    background-color: var(--color-institucional);
+    color: var(--color-secundario);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   }
 }
 
+// Card con detalle de disciplina
 .disciplina-detalle-card {
   position: relative;
-  background-color: #fff;
-  border-radius: 8px;
+  background-color: white;
+  border-radius: 10px;
   padding: 2rem;
   text-align: left;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  border: 1px solid #eee;
+  border: 2px solid var(--color-institucional);
+  animation: fadeIn 0.5s ease-in-out;
 
   h3 {
     margin-top: 0;
     font-size: 1.8rem;
-    color: #007bff;
+    color: var(--color-secundario);
+    font-weight: 700;
   }
 
   h4 {
     font-size: 1.2rem;
-    color: #333;
-    border-bottom: 2px solid #eee;
+    color: var(--color-secundario);
+    border-bottom: 2px solid var(--color-institucional);
     padding-bottom: 0.5rem;
     margin-top: 1.5rem;
+    font-weight: 600;
   }
 
   p {
     line-height: 1.6;
-    color: #555;
+    color: #495057;
   }
 }
 
+// Contenido del detalle
 .detalle-content {
   display: flex;
   gap: 2rem;
@@ -97,10 +119,11 @@
 .mapa-img {
   width: 100%;
   height: auto;
-  border-radius: 8px;
-  border: 1px solid #ddd;
+  border-radius: 10px;
+  border: 2px solid #dee2e6;
 }
 
+// Botón de cierre
 .close-btn {
   position: absolute;
   top: 1rem;
@@ -110,13 +133,15 @@
   font-size: 1.5rem;
   cursor: pointer;
   color: #999;
-  line-height: 1;
+  transition: all 0.3s ease;
 
   &:hover {
-    color: #333;
+    color: var(--color-secundario);
+    transform: scale(1.1);
   }
 }
 
+// Animación institucional
 .animate-fade-in {
   animation: fadeIn 0.5s ease-in-out;
 }
@@ -129,5 +154,35 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+// Responsive
+@include media-breakpoint-down(md) {
+  .disciplina-detalle-card {
+    padding: 1.5rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  .disciplina-btn {
+    font-size: 0.95rem;
+    padding: 0.6rem 1.2rem;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .disciplina-detalle-card {
+    padding: 1rem;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+
+  .detalle-content {
+    flex-direction: column;
   }
 }

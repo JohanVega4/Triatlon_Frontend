@@ -1,5 +1,4 @@
 @use 'bootstrap/scss/bootstrap' as *;
-@use 'sass:color' as color;
 @use '../../animaciones.scss' as *;
 // Colores UPTC Colombia
 $uptc-primary: #005883;
@@ -122,7 +121,7 @@ $transition-collapse: height 0.35s ease;
     transition: $transition-base;
 
     &:hover {
-  color: color.adjust($uptc-primary, $lightness: -10%);
+      color: darken($uptc-primary, 10%);
       transform: translateX(-3px);
     }
   }

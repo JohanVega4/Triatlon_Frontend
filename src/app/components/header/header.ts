@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { LoginModalService } from '../../services/login-modal.service';
 
 @Component({
   selector: 'app-header',
@@ -13,7 +14,7 @@ import { map } from 'rxjs/operators';
   templateUrl: './header.html',
   styleUrls: ['./header.scss']
 })
-export class Header implements OnInit {
+export class Header implements OnInit, OnDestroy {
   isMenuOpen = false;
   showAdminModal = false;
   
@@ -24,7 +25,9 @@ export class Header implements OnInit {
   password = '';
   loginError = '';
 
-  constructor(private router: Router, public authService: AuthService) {
+  private modalSubscription?: Subscription;
+
+  constructor(private router: Router, public authService: AuthService, private loginModalService: LoginModalService) {
     this.isAuthenticated$ = this.authService.currentUser.pipe(map(user => !!user));
     this.isAdmin$ = this.authService.currentUser.pipe(map(user => user?.es_admin ?? false));
 
@@ -33,15 +36,31 @@ export class Header implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // Suscribirse al servicio del modal para controlar su visibilidad
+    this.modalSubscription = this.loginModalService.showModal$.subscribe(
+      (show) => {
+        this.showAdminModal = show;
+        if (show) {
+          // Limpiar campos cuando se abre el modal
+          this.username = '';
+          this.password = '';
+          this.loginError = '';
+        }
+      }
+    );
+  }
 
-  logout(event?: Event): void {
-    if (event) {
-      event.preventDefault();
+  ngOnDestroy(): void {
+    // Limpiar suscripción para evitar memory leaks
+    if (this.modalSubscription) {
+      this.modalSubscription.unsubscribe();
     }
+  }
+
+  logout(): void {
     this.authService.logout();
     this.router.navigate(['/']);
-    this.isMenuOpen = false;
   }
 
   isAdminRoute(): boolean {
@@ -52,20 +71,12 @@ export class Header implements OnInit {
     this.isMenuOpen = !this.isMenuOpen;
   }
 
-  openAdminModal(event?: Event): void {
-    if (event) {
-      event.preventDefault();
-    }
-    this.showAdminModal = true;
-    this.isMenuOpen = false;
-    this.loginError = ''; // Limpiar errores anteriores
-    this.username = '';
-    this.password = '';
+  openAdminModal(): void {
+    this.loginModalService.openModal();
   }
 
   closeAdminModal(): void {
-    this.showAdminModal = false;
-    this.loginError = '';
+    this.loginModalService.closeModal();
   }
 
   onAdminLogin(): void {
@@ -75,9 +86,8 @@ export class Header implements OnInit {
     }
 
     this.authService.login(this.username, this.password).subscribe({
-      next: (response) => {
-        this.closeAdminModal();
-        // Redirigir al admin dashboard después del login exitoso
+      next: () => {
+        this.loginModalService.closeModal();
         this.router.navigate(['/admin']);
       },
       error: (error) => {
@@ -109,5 +119,9 @@ export class Header implements OnInit {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }
+  }
+
+  isLoggedIn(): boolean {
+    return this.authService.isAuthenticated();
   }
 }

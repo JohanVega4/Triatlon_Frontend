@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder, FormGroup, Validators, FormArray,
-  AbstractControl, ValidatorFn, ReactiveFormsModule
+  AbstractControl, ValidatorFn, ReactiveFormsModule, FormsModule
 } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-formulario-inscripcion',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule],
   templateUrl: './formulario-inscripcion.html',
   styleUrl: './formulario-inscripcion.scss'
 })
@@ -20,6 +20,7 @@ export class FormularioInscripcion implements OnInit {
   disciplines = ['Natación', 'Ciclismo', 'Atletismo'];
   genres=['Masculino', 'Femenino'];
   seccionales = ['Tunja', 'Sogamoso', 'Chiquinquirá', 'Duitama', 'Aguazul'];
+  roles = ['Estudiante', 'Funcionario'];
   ascunDisciplines: string[] = ['Natación', 'Ciclismo', 'Atletismo'];
   maxFileSizeBytes = 5 * 1024 * 1024;
   loading = false;
@@ -28,6 +29,9 @@ export class FormularioInscripcion implements OnInit {
   modalMessage = '';
   isSuccess = false;
   inscripcionAbierta = true;
+  mostrarInfoImportante = false;
+  showPrivacyModal = false;
+  aceptaPrivacidad = false;
 
   constructor(private fb: FormBuilder,
               private http: HttpClient,
@@ -60,6 +64,18 @@ export class FormularioInscripcion implements OnInit {
     }
   }
 
+  toggleInfoImportante(): void {
+    this.mostrarInfoImportante = !this.mostrarInfoImportante;
+  }
+
+  openPrivacyModal(): void {
+    this.showPrivacyModal = true;
+  }
+
+  closePrivacyModal(): void {
+    this.showPrivacyModal = false;
+  }
+
 
   get participants() {
     return this.form.get('participants') as FormArray;
@@ -72,6 +88,7 @@ export class FormularioInscripcion implements OnInit {
       telefono: ['', [Validators.required, Validators.pattern(/^\+?\d{10}$/)]],
       genero: ['', Validators.required],
       seccional:['', Validators.required],
+      rol: ['', Validators.required],
       disciplina: ['', Validators.required],
       participacion: ['', Validators.required],
       disciplina_ascun: ['']
@@ -168,6 +185,13 @@ export class FormularioInscripcion implements OnInit {
     if (lower.includes('femenino')) return 'femenino';
     return 'ninguno';
   }
+  
+  private normalizeRol(value: string): 'estudiante' | 'funcionario' | 'ninguno' {
+    const lower = value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); // quita tildes
+    if (lower.includes('estudiante')) return 'estudiante';
+    if (lower.includes('funcionario')) return 'funcionario';
+    return 'ninguno';
+  }
 
   async enviarInscripcion(): Promise<void> {
     this.form.markAllAsTouched();
@@ -177,6 +201,15 @@ export class FormularioInscripcion implements OnInit {
           'Campos incompletos ⚠️',
           'Por favor complete todos los campos correctamente antes de enviar el formulario.',
           false
+      );
+      return;
+    }
+
+    if (!this.aceptaPrivacidad) {
+      this.openModal(
+        'Aviso de privacidad ⚠️',
+        'Debe aceptar el aviso de privacidad y tratamiento de datos para continuar con la inscripción.',
+        false
       );
       return;
     }
@@ -197,6 +230,19 @@ export class FormularioInscripcion implements OnInit {
     return; // 🚫 Detiene el envío
   }
 
+    const generos = participantes.map((p: any) => this.normalizeGenero(p.genero));
+    const hayFemenino = generos.includes('femenino');
+    const hayMasculino = generos.includes('masculino');
+
+    if (!hayFemenino || !hayMasculino) {
+    this.openModal(
+      'Género incompleto ⚠️',
+      'El equipo debe tener al menos una participante femenina y un participante masculino.',
+      false
+    );
+    return;
+  }  
+
     this.loading = true;
     try {
       // 1️⃣ Crear equipo
@@ -215,6 +261,7 @@ export class FormularioInscripcion implements OnInit {
         telefono: p.telefono,
         genero: this.normalizeGenero(p.genero),
         seccional: this.normalizeSeccionales(p.seccional),
+        rol: this.normalizeRol(p.rol),
         delegado: index === 0 ? true : false,
         disciplina: this.normalizeDiscipline(p.disciplina),
         disciplina_ascun: p.participacion.toLowerCase() === 'no' ? 'ninguno' : this.normalizeDiscipline(p.disciplina_ascun),
@@ -265,7 +312,7 @@ export class FormularioInscripcion implements OnInit {
         console.error('❌ Error en la inscripción:', error);
 
         const errorMsg = error?.error?.message || error?.error || error?.message || '';
-        if (errorMsg.includes('IndexKeySpecsConflict') || errorMsg.includes('duplicate key')) {
+        if (errorMsg.includes('IndexKeySpecsConflict') || errorMsg.includes('duplicate key')|| errorMsg.includes('ya existe')) {
             this.openModal(
             'Nombre de equipo repetido ⚠️',
             'El nombre de tu equipo ya está registrado. Por favor cámbialo e inténtalo nuevamente.',
