@@ -16,8 +16,11 @@ import { combineLatest } from 'rxjs';
   styleUrls: ['./podio.scss']
 })
 export class Podio implements OnInit {
+  //  CONFIGURACIÓN: Cambiar a true para mostrar los resultados reales
+  mostrarResultados = false; //  Cambiar a true el día de la competencia
+  
   podio: Equipo[] = [];
-  otrosEquipos: Equipo[] = []; // <-- Añade esta línea
+  otrosEquipos: Equipo[] = [];
   loading = true;
   resultadosVisibles = true;
 
@@ -27,24 +30,30 @@ export class Podio implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    combineLatest([
-      this.equiposService.getEquipos().pipe(
-        map(equipos => {
-          const equiposOrdenados = equipos
-            .filter(e => e.posicion)
-            .sort((a, b) => (a.posicion || 0) - (b.posicion || 0));
-          
-          return {
-            podio: equiposOrdenados.filter(e => e.posicion && e.posicion <= 3),
-            otros: equiposOrdenados.filter(e => e.posicion && e.posicion > 3)
-          };
-        })),
-      this.resultadosService.getVisibilidadResultados()
-    ]).subscribe(([{podio, otros}, visibles]) => {
-      this.podio = podio;
-      this.otrosEquipos = otros; // <-- Asegúrate de asignar los valores aquí
-      this.resultadosVisibles = visibles;
+    if (this.mostrarResultados) {
+      // Cargar resultados reales
+      combineLatest([
+        this.equiposService.getEquipos().pipe(
+          map(equipos => {
+            const equiposOrdenados = equipos
+              .filter(e => e.posicion)
+              .sort((a, b) => (a.posicion || 0) - (b.posicion || 0));
+            
+            return {
+              podio: equiposOrdenados.filter(e => e.posicion && e.posicion <= 3),
+              otros: equiposOrdenados.filter(e => e.posicion && e.posicion > 3)
+            };
+          })),
+        this.resultadosService.getVisibilidadResultados()
+      ]).subscribe(([{podio, otros}, visibles]) => {
+        this.podio = podio;
+        this.otrosEquipos = otros;
+        this.resultadosVisibles = visibles;
+        this.loading = false;
+      });
+    } else {
+      // Mostrar página provisional
       this.loading = false;
-    });
+    }
   }
 }

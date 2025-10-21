@@ -15,6 +15,7 @@ export class NoticiaDetalle implements OnInit {
   noticiasRelacionadas: Noticia[] = [];
   loading = true;
   error = '';
+  mostrarNotificacion = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -61,20 +62,61 @@ export class NoticiaDetalle implements OnInit {
   }
 
   compartirEnFacebook(): void {
+    if (!this.noticia) return;
     const url = window.location.href;
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+    const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+    window.open(shareUrl, '_blank', 'width=600,height=400');
   }
 
   compartirEnTwitter(): void {
+    if (!this.noticia) return;
     const url = window.location.href;
-    const texto = this.noticia?.titulo || '';
-    window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(texto)}`, '_blank');
+    const texto = this.noticia.titulo;
+    const shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(texto)}`;
+    window.open(shareUrl, '_blank', 'width=600,height=400');
   }
 
   compartirEnWhatsApp(): void {
+    if (!this.noticia) return;
     const url = window.location.href;
-    const texto = this.noticia?.titulo || '';
-    window.open(`https://wa.me/?text=${encodeURIComponent(texto + ' ' + url)}`, '_blank');
+    const texto = `${this.noticia.titulo}\n\n${url}`;
+    const shareUrl = `https://wa.me/?text=${encodeURIComponent(texto)}`;
+    window.open(shareUrl, '_blank');
+  }
+
+  compartirEnInstagram(): void {
+    // Instagram no permite compartir enlaces directamente desde web
+    // Redirigir al perfil de Instagram de la UPTC o mostrar mensaje
+    const mensaje = 'Para compartir en Instagram, toma una captura de pantalla y compártela en tu historia o feed.';
+    alert(mensaje);
+  }
+
+  copiarEnlace(): void {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url).then(() => {
+      this.mostrarNotificacionCopiado();
+    }).catch(err => {
+      console.error('Error al copiar:', err);
+      // Fallback para navegadores antiguos
+      const textArea = document.createElement('textarea');
+      textArea.value = url;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        this.mostrarNotificacionCopiado();
+      } catch (err) {
+        alert('No se pudo copiar el enlace');
+      }
+      document.body.removeChild(textArea);
+    });
+  }
+
+  private mostrarNotificacionCopiado(): void {
+    this.mostrarNotificacion = true;
+    setTimeout(() => {
+      this.mostrarNotificacion = false;
+    }, 3000);
   }
 
   formatearFecha(fecha: string): string {

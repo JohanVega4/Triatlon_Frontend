@@ -49,7 +49,8 @@ export class Participantes implements OnInit {
     const termino = this.terminoBusqueda.toLowerCase();
     this.participantesFiltrados = this.participantes.filter(
       (p) =>
-        p.nombre.toLowerCase().includes(termino) || p.equipoNombre?.toLowerCase().includes(termino)
+        p.nombre.toLowerCase().includes(termino) || 
+        p.equipoNombre?.toLowerCase().includes(termino)
     );
   }
 

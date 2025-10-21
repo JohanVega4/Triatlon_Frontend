@@ -20,7 +20,7 @@
         <ul class="list-unstyled">
           <li class="mb-2"><a routerLink="/inscripcion" class="footer-link">Inscripciones</a></li>
           <li class="mb-2"><a href="#" (click)="scrollToInfo($event)" class="footer-link">Información</a></li>
-          <li class="mb-2"><a routerLink="/podio" class="footer-link">Resultados</a></li>
+          <li class="mb-2"><a routerLink="/podio" class="footer-link">Clasificación</a></li>
           <li class="mb-2"><a routerLink="/galeria" class="footer-link">Galería</a></li>
           <li class="mb-2"><a routerLink="/noticias" class="footer-link">Noticias</a></li>
         </ul>
@@ -37,7 +37,13 @@
     </div>
     <hr class="my-4 footer-divider">
     <div class="text-center">
-      <p class="mb-0">© {{ currentYear }} Triatlón UPTC. Todos los derechos reservados.</p>
+      <p class="mb-0">
+        © {{ currentYear }} Triatlón UPTC. Todos los derechos reservados.
+        <span class="footer-separator">|</span>
+        <a routerLink="/acercade" class="about-link-footer">
+          <i class="bi bi-info-circle me-1"></i>Acerca del Proyecto
+        </a>
+      </p>
     </div>
   </div>
 </footer>

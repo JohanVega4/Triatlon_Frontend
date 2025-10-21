@@ -10,40 +10,40 @@ import { Component } from '@angular/core';
 export class EquipoTrabajo {
  equipo = [
     {
-      nombre: 'Andres Amaya',
+      nombre: 'Andrés Amaya',
       rol: 'Scrum Master',
-      imagen: 'assets/img/equipo1.jpg',
+      imagen: 'https://drive.google.com/thumbnail?id=1x_IgJ0teOXJBaXQeLOIZhie6hWjxXWnV&sz=w1000',
       descripcion: 'Coordina y asegura la calidad en cada fase del desarrollo.'
     },
     {
-      nombre: 'Sebastian Vega',
+      nombre: 'Sebastián Vega',
       rol: 'Product Owner',
-      imagen: 'assets/img/equipo2.jpg',
+      imagen: 'https://drive.google.com/thumbnail?id=1oBc8y9Jv7W5de-ZRLTPneaIzVOCtPVoD&sz=w1000',
       descripcion: 'Responsable de la validación de funcionalidades en cada fase de desarrollo.'
     },
     {
       nombre: 'Tatiana Lesmes',
       rol: 'Desarrolladora BackEnd',
-      imagen: 'assets/img/equipo3.jpg',
+      imagen: 'https://drive.google.com/thumbnail?id=1hVxR07OiSKep8mQ0SjpRBC9ki9noTYo-&sz=w1000',
       descripcion: 'Encargada del backend y la arquitectura de la aplicación.'
     },
    
     {
       nombre: 'Juan Beltrán',
       rol: 'Desarrollador BackEnd',
-      imagen: 'assets/img/equipo5.jpg',
+      imagen: 'https://drive.google.com/thumbnail?id=1_piwHwyX03pZPcuSY6W7e4CKK706FJS0&sz=w1000',
       descripcion: 'Encargado del backend y la arquitectura de la aplicación.'
     },
      {
-      nombre: 'Alixon Lopez',
+      nombre: 'Alixon López',
       rol: 'Tester QA',
-      imagen: 'assets/img/equipo4.jpg',
+      imagen: 'https://drive.google.com/thumbnail?id=1_ofItH4T3pMBGn3WSZRTi3YBzqZKJZR9&sz=w1000',
       descripcion: 'Encargada de pruebas y aseguramiento de calidad.'
     },
     {
-      nombre: 'Ingrith Rodriguez',
+      nombre: 'Ingrith Rodríguez',
       rol: 'Desarrolladora FrontEnd',
-      imagen: 'assets/img/equipo6.jpg',
+      imagen: 'https://drive.google.com/thumbnail?id=1ex7P8PloI8ydUUYIqeXmdEuvp7SpcoVM&sz=w1000',
       descripcion: 'Responsable del diseño visual y la experiencia de usuario.'
     }
   ];

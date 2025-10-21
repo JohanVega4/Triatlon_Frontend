@@ -17,21 +17,48 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/inscripcion" routerLinkActive="active">Inscripción</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" (click)="scrollToSection('info', $event)">Información</a>
+
+        <!-- Dropdown Evento -->
+        <li class="nav-item dropdown" (mouseenter)="showEventoDropdown = true"
+          (mouseleave)="showEventoDropdown = false">
+          <a class="nav-link dropdown-toggle" href="#" role="button" [class.active]="isEventoActive()"
+            (click)="toggleEventoDropdown($event)">
+            Evento
+          </a>
+          <ul class="dropdown-menu" [class.show]="showEventoDropdown">
+            <li><a class="dropdown-item" href="#" (click)="scrollToSection('info', $event)">
+                <i class="bi bi-info-circle me-2"></i>Información
+              </a></li>
+            <li><a class="dropdown-item" routerLink="/participantes" (click)="closeDropdowns()">
+                <i class="bi bi-people me-2"></i>Participantes
+              </a></li>
+          </ul>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/podio" routerLinkActive="active">Resultados</a>
+
+        <!-- Dropdown Resultados -->
+        <li class="nav-item dropdown" (mouseenter)="showResultadosDropdown = true"
+          (mouseleave)="showResultadosDropdown = false">
+          <a class="nav-link dropdown-toggle" href="#" role="button" [class.active]="isResultadosActive()"
+            (click)="toggleResultadosDropdown($event)">
+            Resultados
+          </a>
+          <ul class="dropdown-menu" [class.show]="showResultadosDropdown">
+            <li><a class="dropdown-item" routerLink="/podio" (click)="closeDropdowns()">
+                <i class="bi bi-trophy me-2"></i>Clasificación
+              </a></li>
+            <li><a class="dropdown-item" routerLink="/resultados-2024" (click)="closeDropdowns()">
+                <i class="bi bi-trophy me-2"></i>Resultados 2024
+              </a></li>
+            <li><a class="dropdown-item" routerLink="/galeria" (click)="closeDropdowns()">
+                <i class="bi bi-images me-2"></i>Galería
+              </a></li>
+          </ul>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/galeria" routerLinkActive="active">Galería</a>
-        </li>
+
         <li class="nav-item">
           <a class="nav-link" routerLink="/noticias" routerLinkActive="active">Noticias</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/acercade" routerLinkActive="active">Acerca de</a>
-        </li>
+
         <li class="nav-item" *ngIf="!(isAuthenticated$ | async)">
           <a class="nav-link" href="#" (click)="openAdminModal(); $event.preventDefault()"
             [class.active]="isAdminRoute()">Admin</a>

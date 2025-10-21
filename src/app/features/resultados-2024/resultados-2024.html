@@ -1,0 +1,76 @@
+<div class="results-header">
+  <div class="container">
+    <h1 class="results-title">
+      <i class="bi bi-trophy-fill me-2"></i>
+      Resultados 2024
+    </h1>
+    <p class="results-subtitle">Resultados históricos del evento de Triatlón UPTC 2024</p>
+  </div>
+</div>
+
+<div class="container mt-4 mb-5">
+
+  <div class="mb-4">
+    <div class="input-group">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Buscar participante por nombre o equipo..."
+        [(ngModel)]="terminoBusqueda"
+        (input)="filtrarParticipantes()"
+      />
+      <span class="input-group-text">
+        <i class="bi bi-search"></i>
+      </span>
+    </div>
+    <div class="results-count mt-3">
+      <i class="bi bi-person-fill me-2"></i>
+      <span>{{participantes2024Filtrados.length}} de {{participantes2024.length}} participantes</span>
+    </div>
+  </div>
+
+  <div *ngIf="!loading; else loadingTemplate">
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead class="table-light">
+          <tr>
+            <th>Nombre</th>
+            <th>Equipo</th>
+            <th>Disciplina</th>
+            <th>Tiempo</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of participantes2024Filtrados">
+            <td>{{ p.nombre }}</td>
+            <td>{{ p.equipoNombre || ' ' }}</td>
+            <td>
+              <i class="bi {{ getIconoDisciplina(p.disciplina) }} me-2"></i>
+              {{ p.disciplina ? (p.disciplina | titlecase) : '--' }}
+            </td>
+            <td class="font-monospace">{{ p.tiempo || '--:--:--.---' }}</td>
+            <td>
+              <span *ngIf="p.penalizado" class="badge bg-danger">
+                <i class="bi bi-exclamation-triangle me-1"></i>
+                Penalizado
+              </span>
+              <span *ngIf="!p.penalizado" class="badge bg-success">
+                <i class="bi bi-check-circle me-1"></i>
+                Activo
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div *ngIf="participantes2024Filtrados.length === 0" class="alert alert-warning">
+        No se encontraron participantes con ese criterio de búsqueda
+      </div>
+    </div>
+  </div>
+
+  <ng-template #loadingTemplate>
+    <app-loading></app-loading>
+  </ng-template>
+</div>

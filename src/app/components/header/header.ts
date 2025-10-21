@@ -17,6 +17,8 @@ import { LoginModalService } from '../../services/login-modal.service';
 export class Header implements OnInit, OnDestroy {
   isMenuOpen = false;
   showAdminModal = false;
+  showEventoDropdown = false;
+  showResultadosDropdown = false;
   
   isAuthenticated$: Observable<boolean>;
   isAdmin$: Observable<boolean>;
@@ -33,6 +35,7 @@ export class Header implements OnInit, OnDestroy {
 
     this.router.events.subscribe(() => {
       this.isMenuOpen = false;
+      this.closeDropdowns();
     });
   }
 
@@ -103,25 +106,60 @@ export class Header implements OnInit, OnDestroy {
     }
 
     this.isMenuOpen = false;
+    this.closeDropdowns();
 
     if (this.router.url !== '/') {
       this.router.navigate(['/']).then(() => {
         setTimeout(() => {
-          const element = document.getElementById(sectionId);
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        }, 100);
+          this.scrollToElement(sectionId);
+        }, 300); // Aumentado el tiempo para asegurar que la página cargue completamente
       });
     } else {
-      const element = document.getElementById(sectionId);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      this.scrollToElement(sectionId);
+    }
+  }
+
+  private scrollToElement(sectionId: string): void {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const navbarHeight = 80; // Aumentado para compensar mejor
+      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - navbarHeight;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
     }
   }
 
   isLoggedIn(): boolean {
     return this.authService.isAuthenticated();
+  }
+
+  toggleEventoDropdown(event: Event): void {
+    event.preventDefault();
+    this.showEventoDropdown = !this.showEventoDropdown;
+    this.showResultadosDropdown = false;
+  }
+
+  toggleResultadosDropdown(event: Event): void {
+    event.preventDefault();
+    this.showResultadosDropdown = !this.showResultadosDropdown;
+    this.showEventoDropdown = false;
+  }
+
+  closeDropdowns(): void {
+    this.showEventoDropdown = false;
+    this.showResultadosDropdown = false;
+    this.isMenuOpen = false;
+  }
+
+  isEventoActive(): boolean {
+    return this.router.url === '/participantes';
+  }
+
+  isResultadosActive(): boolean {
+    return this.router.url === '/podio' || this.router.url === '/galeria' || this.router.url === '/resultados-2024';
   }
 }

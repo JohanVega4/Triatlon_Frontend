@@ -53,18 +53,21 @@
         <div class="article-share">
           <h4 class="share-title">Compartir esta noticia</h4>
           <div class="share-buttons">
-            <button (click)="compartirEnFacebook()" class="share-btn share-facebook">
+            <button (click)="compartirEnFacebook()" class="share-btn share-facebook" title="Compartir en Facebook">
               <i class="bi bi-facebook"></i>
             </button>
-            <button (click)="compartirEnTwitter()" class="share-btn share-twitter">
+            <button (click)="compartirEnTwitter()" class="share-btn share-twitter" title="Compartir en Twitter/X">
               <i class="bi bi-twitter"></i>
             </button>
-            <button (click)="compartirEnWhatsApp()" class="share-btn share-whatsapp">
+            <button (click)="compartirEnWhatsApp()" class="share-btn share-whatsapp" title="Compartir en WhatsApp">
               <i class="bi bi-whatsapp"></i>
             </button>
-            <a href="https://www.instagram.com" target="_blank" class="share-btn share-instagram">
+            <button (click)="compartirEnInstagram()" class="share-btn share-instagram" title="Compartir en Instagram">
               <i class="bi bi-instagram"></i>
-            </a>
+            </button>
+            <button (click)="copiarEnlace()" class="share-btn share-link" title="Copiar enlace">
+              <i class="bi bi-link-45deg"></i>
+            </button>
           </div>
         </div>
       </div>
@@ -98,3 +101,9 @@
     </div>
   </div>
 </section>
+
+<!-- Notificación de enlace copiado -->
+<div class="copy-notification" [class.show]="mostrarNotificacion">
+  <i class="bi bi-check-circle-fill"></i>
+  <span>¡Enlace copiado al portapapeles!</span>
+</div>

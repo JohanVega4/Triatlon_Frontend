@@ -1,0 +1,235 @@
+:root {
+  --color-institucional: #fecb00;
+  --color-secundario: #000000;
+  --color-terciario: #f8f9fa;
+}
+
+// Header de la página
+.results-header {
+  background: linear-gradient(135deg, var(--color-secundario) 0%, #1a1a1a 100%);
+  color: white;
+  text-align: center;
+  padding: 60px 20px;
+  margin-bottom: 3rem;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="rgba(254,203,0,0.1)"/></svg>');
+    opacity: 0.3;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.results-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: white;
+  
+  i {
+    color: var(--color-institucional);
+  }
+
+  &::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background-color: var(--color-institucional);
+    margin: 20px auto 0;
+  }
+}
+
+.results-subtitle {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+// Contenedor principal
+.container {
+  padding-bottom: 3rem;
+}
+
+// Contador de resultados
+.results-count {
+  color: var(--color-secundario);
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+
+  i {
+    color: var(--color-institucional);
+    font-size: 1.2rem;
+  }
+}
+
+// Tabla de resultados
+.table {
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+  border: none !important;
+
+  // Sobrescribir estilos de Bootstrap
+  thead {
+    background-color: var(--color-secundario) !important;
+    color: white !important;
+    border: none !important;
+
+    th {
+      font-weight: 600;
+      padding: 1rem;
+      border: none !important;
+      color: white !important;
+      background-color: var(--color-secundario) !important;
+    }
+  }
+
+  tbody {
+    tr {
+      transition: all 0.3s ease;
+      border: none !important;
+
+      &:hover {
+        background-color: rgba(254, 203, 0, 0.15) !important;
+        transform: translateY(-2px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      td {
+        padding: 1rem;
+        vertical-align: middle;
+        border-color: rgba(0, 0, 0, 0.05) !important;
+        color: var(--color-secundario);
+      }
+    }
+  }
+}
+
+// Sobrescribir clase table-light de Bootstrap
+.table-light {
+  background-color: var(--color-secundario) !important;
+  color: white !important;
+
+  th {
+    background-color: var(--color-secundario) !important;
+    color: white !important;
+  }
+}
+
+// Sobrescribir clase table-hover de Bootstrap
+.table-hover tbody tr:hover {
+  background-color: rgba(254, 203, 0, 0.15) !important;
+}
+
+// Badges con colores institucionales
+.badge {
+  font-size: 0.85rem;
+  padding: 0.5rem 0.9rem;
+  font-weight: 600;
+  border-radius: 20px;
+
+  &.bg-success {
+    background-color: var(--color-institucional) !important;
+    color: var(--color-secundario) !important;
+  }
+
+  &.bg-danger {
+    background-color: #dc3545 !important;
+    color: white !important;
+  }
+}
+
+// Buscador
+.input-group {
+  max-width: 600px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+
+  .form-control {
+    border: 2px solid transparent;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+
+    &:focus {
+      border-color: var(--color-institucional);
+      box-shadow: 0 0 0 0.2rem rgba(254, 203, 0, 0.25);
+    }
+  }
+
+  .input-group-text {
+    background-color: var(--color-institucional);
+    border-color: var(--color-institucional);
+    color: var(--color-secundario);
+    font-weight: bold;
+    padding: 0.75rem 1.25rem;
+  }
+}
+
+// Iconos de disciplinas con colores institucionales
+.bi-droplet {
+  color: var(--color-institucional);
+}
+
+.bi-bicycle {
+  color: var(--color-institucional);
+}
+
+.bi-person-running {
+  color: var(--color-institucional);
+}
+
+// Alert con colores institucionales
+.alert-warning {
+  background-color: rgba(254, 203, 0, 0.1);
+  border: 2px solid var(--color-institucional);
+  color: var(--color-secundario);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  font-weight: 500;
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .results-header {
+    padding: 40px 15px;
+  }
+
+  .results-title {
+    font-size: 2rem;
+  }
+
+  .results-subtitle {
+    font-size: 1rem;
+  }
+
+  .input-group {
+    max-width: 100%;
+  }
+
+  .table {
+    font-size: 0.9rem;
+
+    thead th,
+    tbody td {
+      padding: 0.75rem 0.5rem;
+    }
+  }
+}

@@ -12,16 +12,15 @@
 
       <!-- Información Importante (Desplegable) -->
       <div class="alert alert-info mt-3" role="alert">
-        <div class="d-flex justify-content-between align-items-center" 
-             style="cursor: pointer;" 
-             (click)="toggleInfoImportante()">
+        <div class="d-flex justify-content-between align-items-center" style="cursor: pointer;"
+          (click)="toggleInfoImportante()">
           <h5 class="mb-0">
             <i class="bi bi-info-circle-fill me-2"></i>
             Información importante
           </h5>
           <i class="bi" [ngClass]="mostrarInfoImportante ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
         </div>
-        
+
         <div *ngIf="mostrarInfoImportante" class="mt-3">
           <ul class="mb-0">
             <li class="mb-2">
@@ -31,13 +30,13 @@
               <strong>Documentos necesarios:</strong> Carnet, cédula de cada participante y seguro médico.
             </li>
             <li class="mb-2">
-              <strong>Restricción ASCUN:</strong> Las personas pertenecientes a disciplina ASCUN no podrán participar en la misma disciplina en el evento de triatlón.
+              <strong>Restricción ASCUN:</strong> Las personas pertenecientes a disciplina ASCUN no podrán participar en
+              la misma disciplina en el evento de triatlón.
             </li>
             <li class="mb-0">
-              <strong>Seguro estudiantil:</strong> 
-              <a href="https://www.uptc.edu.co/export/sites/default/facultades/f_educacion/pregrado/educacion_fisica/documentos/CERTIFICADO_SEGURO_ESTUDIANTIL.pdf" 
-                 target="_blank" 
-                 class="alert-link">
+              <strong>Seguro estudiantil:</strong>
+              <a href="https://www.uptc.edu.co/export/sites/default/facultades/f_educacion/pregrado/educacion_fisica/documentos/CERTIFICADO_SEGURO_ESTUDIANTIL.pdf"
+                target="_blank" class="alert-link">
                 Descarga aquí tu seguro estudiantil
                 <i class="bi bi-download ms-1"></i>
               </a>
@@ -69,7 +68,7 @@
         <div formArrayName="participants">
           <div *ngFor="let p of participants.controls; let i = index" [formGroupName]="i" class="participant-card">
             <h5>Participante {{ i + 1 }}
-               <span *ngIf="i === 0">- Delegado</span>
+              <span *ngIf="i === 0">- Delegado</span>
             </h5>
 
             <div class="row g-3">
@@ -126,7 +125,8 @@
                   <option value="">Seleccione su seccional</option>
                   <option *ngFor="let s of seccionales" [value]="s">{{ s }}</option>
                 </select>
-                <div *ngIf="getParticipantControl(i, 'seccional')?.invalid && getParticipantControl(i, 'seccional')?.touched"
+                <div
+                  *ngIf="getParticipantControl(i, 'seccional')?.invalid && getParticipantControl(i, 'seccional')?.touched"
                   class="text-danger">
                   <small>Seccional requerida</small>
                 </div>
@@ -205,7 +205,8 @@
               <input type="file" class="form-control" (change)="onTeamFileSelected($event)" accept=".pdf">
               <div class="form-text">
                 <i class="bi bi-info-circle me-1"></i>
-                Suba un único PDF que contenga los carnets, las cédulas y los certificados de seguro médico de los 3 participantes (máx. 5MB)
+                Suba un único PDF que contenga los carnets, las cédulas y los certificados de seguro médico de los 3
+                participantes (máx. 5MB)
               </div>
               <div *ngIf="form.get('teamFile')?.invalid && form.get('teamFile')?.touched" class="text-danger">
                 <small *ngIf="form.get('teamFile')?.errors?.['requiredFile']">Archivo requerido</small>
@@ -220,10 +221,10 @@
         <div class="privacy-section">
           <div class="privacy-checkbox">
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="privacyCheck" 
-                     [(ngModel)]="aceptaPrivacidad" [ngModelOptions]="{standalone: true}">
+              <input class="form-check-input" type="checkbox" id="privacyCheck" [(ngModel)]="aceptaPrivacidad"
+                [ngModelOptions]="{standalone: true}">
               <label class="form-check-label" for="privacyCheck">
-                He leído y acepto el 
+                He leído y acepto el
                 <a href="javascript:void(0)" class="privacy-link" (click)="openPrivacyModal()">
                   <strong>Aviso de Privacidad y Tratamiento de Datos</strong>
                 </a>
@@ -234,9 +235,11 @@
         </div>
 
         <div class="text-center mt-4">
-          <button type="submit" class="btn btn-inscripcion" [disabled]="form.invalid || !inscripcionAbierta || !aceptaPrivacidad">
+          <button type="submit" class="btn btn-inscripcion"
+            [disabled]="form.invalid || !inscripcionAbierta || !aceptaPrivacidad">
             <i class="bi bi-send me-2"></i>
-            {{ form.invalid || !aceptaPrivacidad ? 'Complete todos los campos' : 'Enviar inscripción' }}
+            {{ !aceptaPrivacidad && form.valid ? 'Debe aceptar el Aviso de Privacidad' : (form.invalid ? 'Complete todos
+            los campos' : 'Enviar inscripción') }}
           </button>
         </div>
       </form>
@@ -280,10 +283,12 @@
       <div class="modal-body privacy-modal-body">
         <div class="privacy-content">
           <p><strong>Universidad Pedagógica y Tecnológica de Colombia - UPTC</strong></p>
-          
+
           <p>
-            En cumplimiento de la Ley 1581 de 2012 y el Decreto 1377 de 2013, la Universidad Pedagógica y Tecnológica de Colombia (UPTC) 
-            informa a los participantes del evento de Triatlón que los datos personales suministrados serán tratados de manera confidencial 
+            En cumplimiento de la Ley 1581 de 2012 y el Decreto 1377 de 2013, la Universidad Pedagógica y Tecnológica de
+            Colombia (UPTC)
+            informa a los participantes del evento de Triatlón que los datos personales suministrados serán tratados de
+            manera confidencial
             y utilizados exclusivamente para los siguientes fines:
           </p>
 
@@ -316,7 +321,8 @@
             <li>Solicitar prueba de la autorización otorgada.</li>
             <li>Ser informado sobre el uso que se ha dado a sus datos personales.</li>
             <li>Presentar quejas ante la Superintendencia de Industria y Comercio por infracciones a la ley.</li>
-            <li>Revocar la autorización y/o solicitar la supresión de sus datos cuando no se respeten los principios, derechos y garantías constitucionales y legales.</li>
+            <li>Revocar la autorización y/o solicitar la supresión de sus datos cuando no se respeten los principios,
+              derechos y garantías constitucionales y legales.</li>
           </ul>
 
           <p><strong>4. Responsable del tratamiento:</strong></p>
@@ -328,19 +334,22 @@
 
           <p><strong>5. Seguridad de la información:</strong></p>
           <p>
-            La UPTC implementa medidas técnicas, humanas y administrativas necesarias para proteger la información personal 
+            La UPTC implementa medidas técnicas, humanas y administrativas necesarias para proteger la información
+            personal
             y evitar su adulteración, pérdida, consulta, uso o acceso no autorizado o fraudulento.
           </p>
 
           <p><strong>6. Vigencia:</strong></p>
           <p>
-            Los datos personales serán conservados durante el tiempo necesario para cumplir con las finalidades descritas 
+            Los datos personales serán conservados durante el tiempo necesario para cumplir con las finalidades
+            descritas
             y de acuerdo con las disposiciones legales aplicables.
           </p>
 
           <p class="mt-3">
-            <strong>Al aceptar este aviso, usted autoriza expresamente a la UPTC para el tratamiento de sus datos personales 
-            conforme a lo establecido en la presente política.</strong>
+            <strong>Al aceptar este aviso, usted autoriza expresamente a la UPTC para el tratamiento de sus datos
+              personales
+              conforme a lo establecido en la presente política.</strong>
           </p>
         </div>
       </div>

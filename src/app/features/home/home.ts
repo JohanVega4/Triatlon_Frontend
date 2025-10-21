@@ -37,6 +37,8 @@ export class Home implements OnInit, OnDestroy {
   galleryRotationInterval: any;
   private imagesByYear = new Map<number, any[]>();
   private currentIndices = { 2024: 0, 2023: 0 };
+  private usedImageUrls = new Set<string>(); // Para rastrear imágenes actualmente mostradas
+  private imagenesNoticiasIds: string[] = []; // IDs de imágenes usadas en noticias
 
 
 
@@ -77,119 +79,132 @@ export class Home implements OnInit, OnDestroy {
     });
   }
 
-  private loadGalleryImages(): void {
+  private async loadGalleryImages(): Promise<void> {
     this.loadingGallery = true;
 
-    this.imagenesService.getImagenes().subscribe({
-      next: (response) => {
-        if (response.success && response.data.length > 0) {
-          // Agrupar imágenes por año
-          this.imagesByYear.clear();
+    try {
+      // Primero obtener los IDs de imágenes usadas en noticias
+      await this.getImagenesDeNoticias();
 
-          response.data.forEach(img => {
-            const year = new Date(img.fecha_imagen).getFullYear();
-            if (!this.imagesByYear.has(year)) {
-              this.imagesByYear.set(year, []);
-            }
-            this.imagesByYear.get(year)?.push(img);
-          });
+      // Luego cargar las imágenes de galería
+      this.imagenesService.getImagenes().subscribe({
+        next: (response) => {
+          if (response.success && response.data.length > 0) {
+            // Filtrar imágenes que NO están en noticias
+            const imagenesGaleria = response.data.filter(img => {
+              return !this.imagenesNoticiasIds.includes(img.id || '');
+            });
 
-          // Mezclar aleatoriamente las imágenes de cada año
-          this.imagesByYear.forEach((images, year) => {
-            this.imagesByYear.set(year, this.shuffleArray(images));
-          });
+            // Agrupar imágenes por año
+            this.imagesByYear.clear();
 
-          // Seleccionar imágenes iniciales
-          this.updateGalleryImages();
+            imagenesGaleria.forEach(img => {
+              const year = new Date(img.fecha_imagen).getFullYear();
+              if (!this.imagesByYear.has(year)) {
+                this.imagesByYear.set(year, []);
+              }
+              this.imagesByYear.get(year)?.push(img);
+            });
 
-          // Iniciar rotación automática cada 5 segundos
-          this.startGalleryRotation();
-        } else {
+            // Mezclar aleatoriamente las imágenes de cada año
+            this.imagesByYear.forEach((images, year) => {
+              this.imagesByYear.set(year, this.shuffleArray(images));
+            });
+
+            // Seleccionar imágenes iniciales
+            this.updateGalleryImages();
+
+            // Iniciar rotación automática
+            this.startGalleryRotation();
+          } else {
+            this.galeria = [];
+          }
+
+          this.loadingGallery = false;
+        },
+        error: (error) => {
+          console.error('Error al cargar imágenes de galería:', error);
           this.galeria = [];
+          this.loadingGallery = false;
         }
+      });
+    } catch (error) {
+      console.error('Error al obtener imágenes de noticias:', error);
+      this.loadingGallery = false;
+    }
+  }
 
-        this.loadingGallery = false;
-      },
-      error: (error) => {
-        console.error('Error al cargar imágenes de galería:', error);
-        this.galeria = [];
-        this.loadingGallery = false;
+  private async getImagenesDeNoticias(): Promise<void> {
+    try {
+      const response = await this.noticiasService.listarNoticias().toPromise();
+      if (response && response.success) {
+        // Extraer los IDs de las imágenes de todas las noticias
+        this.imagenesNoticiasIds = response.data
+          .filter(noticia => noticia.imagen && noticia.imagen.id)
+          .map(noticia => noticia.imagen!.id);
       }
-    });
+    } catch (error) {
+      console.error('Error obteniendo imágenes de noticias:', error);
+      this.imagenesNoticiasIds = [];
+    }
   }
 
   private updateGalleryImages(): void {
     const selectedImages: GalleryItem[] = [];
+    this.usedImageUrls.clear();
 
-    // Intentar obtener 2 imágenes de 2024
-    const images2024 = this.imagesByYear.get(2024) || [];
-    if (images2024.length > 0) {
-      // Primera imagen de 2024
-      const img1 = images2024[this.currentIndices[2024] % images2024.length];
-      selectedImages.push({
-        imagen: this.convertGoogleDriveUrl(img1.url),
-        titulo: img1.nombre,
-        descripcion: img1.descripcion || 'Triatlón 2024'
-      });
+    // Recopilar todas las imágenes disponibles
+    const allImages: any[] = [];
+    this.imagesByYear.forEach((images) => {
+      allImages.push(...images);
+    });
 
-      // Segunda imagen de 2024 (si hay más de una)
-      if (images2024.length > 1) {
-        const img2 = images2024[(this.currentIndices[2024] + 1) % images2024.length];
-        selectedImages.push({
-          imagen: this.convertGoogleDriveUrl(img2.url),
-          titulo: img2.nombre,
-          descripcion: img2.descripcion || 'Triatlón 2024'
-        });
-      } else {
-        // Si solo hay una imagen de 2024, repetirla
-        selectedImages.push(selectedImages[0]);
-      }
-    }
+    // Si hay menos de 4 imágenes únicas, mostrar solo las disponibles
+    const maxImages = Math.min(4, allImages.length);
 
-    // Intentar obtener 2 imágenes de 2023
-    const images2023 = this.imagesByYear.get(2023) || [];
-    if (images2023.length > 0) {
-      // Primera imagen de 2023
-      const img1 = images2023[this.currentIndices[2023] % images2023.length];
-      selectedImages.push({
-        imagen: this.convertGoogleDriveUrl(img1.url),
-        titulo: img1.nombre,
-        descripcion: img1.descripcion || 'Triatlón 2023'
-      });
+    // Seleccionar imágenes únicas
+    let attempts = 0;
+    const maxAttempts = allImages.length * 2;
 
-      // Segunda imagen de 2023 (si hay más de una)
-      if (images2023.length > 1) {
-        const img2 = images2023[(this.currentIndices[2023] + 1) % images2023.length];
-        selectedImages.push({
-          imagen: this.convertGoogleDriveUrl(img2.url),
-          titulo: img2.nombre,
-          descripcion: img2.descripcion || 'Triatlón 2023'
-        });
-      } else {
-        // Si solo hay una imagen de 2023, repetirla
-        selectedImages.push(selectedImages[selectedImages.length - 1]);
-      }
-    }
-
-    // Si no hay suficientes imágenes de 2024 y 2023, completar con otros años
-    if (selectedImages.length < 4) {
-      const otherYears = [2022, 2021, 2020, 2019];
-      for (const year of otherYears) {
-        if (selectedImages.length >= 4) break;
-
-        const yearImages = this.imagesByYear.get(year);
-        if (yearImages && yearImages.length > 0) {
-          const img = yearImages[0];
-          selectedImages.push({
-            imagen: this.convertGoogleDriveUrl(img.url),
-            titulo: img.nombre,
-            descripcion: img.descripcion || `Triatlón ${year}`
-          });
+    while (selectedImages.length < maxImages && attempts < maxAttempts) {
+      // Priorizar 2024 y 2023
+      let img;
+      if (selectedImages.length < 2) {
+        const images2024 = this.imagesByYear.get(2024) || [];
+        if (images2024.length > 0) {
+          const index = (this.currentIndices[2024] + selectedImages.length) % images2024.length;
+          img = images2024[index];
+        }
+      } else if (selectedImages.length < 4) {
+        const images2023 = this.imagesByYear.get(2023) || [];
+        if (images2023.length > 0) {
+          const index = (this.currentIndices[2023] + (selectedImages.length - 2)) % images2023.length;
+          img = images2023[index];
         }
       }
+
+      // Si no hay suficientes de 2024/2023, usar otros años
+      if (!img) {
+        const randomIndex = Math.floor(Math.random() * allImages.length);
+        img = allImages[randomIndex];
+      }
+
+      const imageUrl = this.convertGoogleDriveUrl(img.url);
+
+      // Solo agregar si no está ya en uso
+      if (!this.usedImageUrls.has(imageUrl)) {
+        this.usedImageUrls.add(imageUrl);
+        selectedImages.push({
+          imagen: imageUrl,
+          titulo: img.nombre,
+          descripcion: img.descripcion || `Triatlón ${new Date(img.fecha_imagen).getFullYear()}`
+        });
+      }
+
+      attempts++;
     }
 
-    this.galeria = selectedImages.slice(0, 4);
+    this.galeria = selectedImages;
   }
 
   private startGalleryRotation(): void {
@@ -211,42 +226,48 @@ export class Home implements OnInit, OnDestroy {
   }
 
   private rotateImage(index: number): void {
-    const images2024 = this.imagesByYear.get(2024) || [];
-    const images2023 = this.imagesByYear.get(2023) || [];
+    if (!this.galeria[index]) return;
 
+    // Recopilar todas las imágenes disponibles
+    const allImages: any[] = [];
+    this.imagesByYear.forEach((images) => {
+      allImages.push(...images);
+    });
+
+    // Si hay 4 o menos imágenes únicas, no rotar
+    if (allImages.length <= 4) return;
+
+    // Buscar una nueva imagen que no esté actualmente en uso
     let newImage: GalleryItem | null = null;
+    let attempts = 0;
+    const maxAttempts = allImages.length;
 
-    // Obtener la nueva imagen según el índice
-    if (index === 0 || index === 1) {
-      if (images2024.length > 1) {
-        this.currentIndices[2024] = (this.currentIndices[2024] + 1) % images2024.length;
-        const imgIndex = index === 0 ?
-          this.currentIndices[2024] :
-          (this.currentIndices[2024] + 1) % images2024.length;
-        const img = images2024[imgIndex];
+    while (!newImage && attempts < maxAttempts) {
+      // Seleccionar imagen aleatoria
+      const randomIndex = Math.floor(Math.random() * allImages.length);
+      const img = allImages[randomIndex];
+      const imageUrl = this.convertGoogleDriveUrl(img.url);
+
+      // Verificar que no esté actualmente en uso
+      if (!this.usedImageUrls.has(imageUrl)) {
         newImage = {
-          imagen: this.convertGoogleDriveUrl(img.url),
+          imagen: imageUrl,
           titulo: img.nombre,
-          descripcion: img.descripcion || 'Triatlón 2024'
+          descripcion: img.descripcion || `Triatlón ${new Date(img.fecha_imagen).getFullYear()}`
         };
       }
-    } else if (index === 2 || index === 3) {
-      if (images2023.length > 1) {
-        this.currentIndices[2023] = (this.currentIndices[2023] + 1) % images2023.length;
-        const imgIndex = index === 2 ?
-          this.currentIndices[2023] :
-          (this.currentIndices[2023] + 1) % images2023.length;
-        const img = images2023[imgIndex];
-        newImage = {
-          imagen: this.convertGoogleDriveUrl(img.url),
-          titulo: img.nombre,
-          descripcion: img.descripcion || 'Triatlón 2023'
-        };
-      }
+
+      attempts++;
     }
 
-    // Actualizar solo la imagen específica con animación
-    if (newImage && this.galeria[index]) {
+    // Solo actualizar si encontramos una nueva imagen diferente
+    if (newImage && this.galeria[index] && newImage.imagen !== this.galeria[index].imagen) {
+      // Remover la URL antigua del set
+      this.usedImageUrls.delete(this.galeria[index].imagen);
+      
+      // Añadir la nueva URL al set
+      this.usedImageUrls.add(newImage.imagen);
+
       // Añadir clase de animación al elemento
       const galleryItems = document.querySelectorAll('.gallery-item');
       if (galleryItems[index]) {

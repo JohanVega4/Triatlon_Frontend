@@ -14,24 +14,42 @@
   </div>
 
   @if (selectedDiscipline(); as disciplina) {
-    <div class="disciplina-detalle-card animate-fade-in">
-      <button class="close-btn" (click)="closeDetail()" aria-label="Cerrar detalles">×</button>
-      <h3>{{ disciplina.nombre }}</h3>
-      
-      <div class="detalle-content">
-        <div class="texto-info">
-          <h4>Reglamento</h4>
-          <p>{{ disciplina.reglamento }}</p>
-          
-          <h4>Reglas Clave</h4>
-          <p style="white-space: pre-line;">{{ disciplina.reglas }}</p>
-        </div>
+    <div class="modal-overlay" (click)="closeDetail()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <button class="close-btn" (click)="closeDetail()" aria-label="Cerrar detalles">×</button>
         
-        <div class="mapa-info">
-          <h4>Mapa del Recorrido</h4>
-          <img [src]="disciplina.mapaUrl" [alt]="'Mapa del recorrido de ' + disciplina.nombre" class="mapa-img">
+        <!-- Pestañas de navegación -->
+        <div class="modal-tabs">
+          @for (disc of disciplinas(); track disc.nombre) {
+            <button 
+              class="tab-btn" 
+              [class.active]="selectedDiscipline() === disc"
+              (click)="selectDiscipline(disc)">
+              {{ disc.nombre }}
+            </button>
+          }
+        </div>
+
+        <h3>{{ disciplina.nombre }}</h3>
+        
+        <div class="detalle-content">
+          <div class="texto-info">
+            <h4>Reglamento</h4>
+            <p style="white-space: pre-line;">{{ disciplina.reglamento }}</p>
+            
+            <h4>Reglas Clave</h4>
+            <p style="white-space: pre-line;">{{ disciplina.reglas }}</p>
+          </div>
+          
+          <div class="mapa-info">
+            <h4>Mapa del Recorrido</h4>
+            <img [src]="disciplina.mapaUrl" [alt]="'Mapa del recorrido de ' + disciplina.nombre" class="mapa-img">
+          </div>
         </div>
       </div>
     </div>
   }
+  <button class="btn-resultados-anterior" (click)="verResultadosAnteriores()">
+    Ver resultados de la anterior competencia
+  </button>
 </section>

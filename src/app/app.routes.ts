@@ -15,6 +15,7 @@ import { GestionNoticias } from './admin/gestion-noticias/gestion-noticias';
 import { AdminGuard } from './guards/admin-guard';
 import { Login } from './admin/login/login';
 import { Participantes } from './features/participantes/participantes';
+import { Resultados2024 } from './features/resultados-2024/resultados-2024';
 import { Noticias } from './features/noticias/noticias';
 import { NoticiaDetalle } from './features/noticia-detalle/noticia-detalle';
 import { FormularioInscripcion } from './features/formulario-inscripcion/formulario-inscripcion';
@@ -28,8 +29,9 @@ export const routes: Routes = [
   { path: 'noticias', component: Noticias, title: 'Noticias - Triatlón UPTC' },
   { path: 'noticia/:id', component: NoticiaDetalle, title: 'Detalle de Noticia - Triatlón UPTC' },
   { path: 'equipos', component: ListaEquipos, title: 'Lista de Equipos - Triatlón' },
-  { path: 'podio', component: Podio, title: 'Podio - Triatlón' },
+  { path: 'podio', component: Podio, title: 'Clasificación - Triatlón' },
   { path: 'participantes', component: Participantes, title: 'Participantes - Triatlón' },
+  { path: 'resultados-2024', component: Resultados2024, title: 'Resultados 2024 - Triatlón' },
   { path: 'equipo/:id', component: EquipoDetalle, title: 'Detalle de Equipo - Triatlón' },
   { path: 'premios-individuales', component: PremiosIndividuales, title: 'Premios Individuales - Triatlón' },
   { path: 'resultados/:disciplina', component: ResultadosDisciplina, title: 'Resultados por Disciplina - Triatlón' },
